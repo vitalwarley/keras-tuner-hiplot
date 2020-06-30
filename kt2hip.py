@@ -22,6 +22,15 @@ def get_tuner_summary(project_path):
     return summary
 
 
+def fetch_my_experiment(uri):
+    PREFIX = "exp://"
+    if not uri.startswith(PREFIX):
+        raise hip.ExperimentFetcherDoesntApply
+    uri = uri[len(PREFIX):]
+    tuner_summary = get_tuner_summary(uri)
+    return hip.Experiment.from_iterable(tuner_summary)
+
+
 if __name__ == "__main__":
     kt_project_path = sys.argv[1] if len(sys.argv) > 1 else os.getcwd()
     save_as = os.path.join(kt_project_path, 'hiplot.csv')
